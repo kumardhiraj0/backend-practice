@@ -192,46 +192,137 @@
 
 
 //make html page , load html files
-const express = require("express");
+// const express = require("express");
+// const app = express();
+// const path = require("path");
+// const publicpath = path.join(__dirname,"public");
+// //app.use(express.static(publicpath))
+// //inform node js that we are using ejs engine
+// app.set('view engine', 'ejs')
+
+
+
+
+// //without extension lec 22
+// app.get("/",(_,res)=>{
+//     res.sendFile(`${publicpath}/index.html`)
+// })
+
+// app.get("/about",(_,res)=>{
+//     res.sendFile(`${publicpath}/about.html`)
+// })
+
+// //load ejs file
+// app.get("/profile",(_,res)=>{
+//     const user = {
+//         name:"dhiraj",
+//         email:"kumar@gmail.com"
+//     }
+//     res.render("profile",{user});
+// })
+// app.get("/contact",(_,res)=>{
+//     const user = {
+//         name:"mohit",
+//         city:"bhopal",
+//         skills:["js","node","react","express","php","mysql"]
+//     }
+//     res.render("contact",{user});
+// })
+
+// app.get("*",(_,res)=>{
+//     res.sendFile(`${publicpath}/notfound.html`)
+// })
+
+
+// app.listen(3000);
+
+
+// //middle ware in express.js
+// const express = require("express");
+// const port = 3000;
+// const app = express();
+// //use middleware from seperate file
+// const reqFilter = require("./middleware");
+
+
+// // const reqFilter = (req,res,next)=>{
+// //     if(!req.query.age){
+// //         res.send("Please provide age on quary parameter");
+
+// //     }else if(req.query.age<18){
+// //         res.send("less than 18 can not acess this page");
+// //     }
+// //     else{
+// //         next();
+// //     }
+// // }
+
+// //application level middleware
+// // app.use(reqFilter);
+
+
+// app.get("/",(req,res)=>{
+//     res.send("welcome to home page");
+// })
+// //route-level middleware(apply middleware in single route)
+// app.get("/users",reqFilter,(req,res)=>{
+//     res.send("welcome to users page");
+// })
+
+// app.get("/about",(req,res)=>{
+//     res.send("welcome to about page");
+// })
+
+// // Middleware applied to a group of routes using a router
+// const router = express.Router();
+// router.use(reqFilter);
+// router.get("/contact",(req,res)=>{
+//     res.send("hello,from contact page");
+// })
+
+// router.get("/service",(req,res)=>{
+//     res.send("hello,from service  page");
+// })
+// app.use('/', router);
+
+// app.listen(port,()=>{
+
+//    console.log(`listen on port ${port}`);
+// })
+
+//chat gtp example of route level middleware
+const express = require('express');
 const app = express();
-const path = require("path");
-const publicpath = path.join(__dirname,"public");
-//app.use(express.static(publicpath))
-//inform node js that we are using ejs engine
-app.set('view engine', 'ejs')
 
+// Route-level middleware
+const myMiddleware = (req, res, next) => {
+  // Middleware logic goes here
+  console.log('This is route-level middleware');
+  next(); // Call next() to proceed to the next middleware or route handler
+};
 
+// Middleware applied to a specific route
+app.get('/myroute', myMiddleware, (req, res) => {
+  // Route handler logic goes here
+  res.send('Hello from myroute!');
+});
 
+// Middleware applied to a group of routes using a router
+const router = express.Router();
+router.use(myMiddleware);
 
-//without extension lec 22
-app.get("/",(_,res)=>{
-    res.sendFile(`${publicpath}/index.html`)
-})
+router.get('/route1', (req, res) => {
+  // Route handler logic for route1
+  res.send('Hello from route1!');
+});
 
-app.get("/about",(_,res)=>{
-    res.sendFile(`${publicpath}/about.html`)
-})
+router.get('/route2', (req, res) => {
+  // Route handler logic for route2
+  res.send('Hello from route2!');
+});
 
-//load ejs file
-app.get("/profile",(_,res)=>{
-    const user = {
-        name:"dhiraj",
-        email:"kumar@gmail.com"
-    }
-    res.render("profile",{user});
-})
-app.get("/contact",(_,res)=>{
-    const user = {
-        name:"mohit",
-        city:"bhopal",
-        skills:["js","node","react","express","php","mysql"]
-    }
-    res.render("contact",{user});
-})
+app.use('/', router);
 
-app.get("*",(_,res)=>{
-    res.sendFile(`${publicpath}/notfound.html`)
-})
-
-
-app.listen(3000);
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
