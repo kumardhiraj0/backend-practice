@@ -1,55 +1,34 @@
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://0.0.0.0:27017/e-comm");
-const productschema = new mongoose.Schema({
-    name:String,
-    price:Number,
-    brand:String,
-    category:String
-  });
-  //create data in db
-  const saveInDB =async ()=>{
-  const productsModal = mongoose.model("products",productschema);
-  let data = new productsModal({
-    name:"realme 2",
-    price:459,
-    brand:"realme",
-    category:"tablet"
-  });
+//post api with mongoose
+const express = require("express");
+require("./config");
+const product = require("./product");
+
+const app = express();
+app.use(express.json());
+app.post("/create", async (req, res) => {
+  let data = new product(req.body);
   let result = await data.save();
-  console.log(result);
-}
-// saveInDB()
-//update in db
-const updateInDB =async ()=>{
-  const productsModal = mongoose.model("products",productschema);
-  const data = await productsModal.updateMany(
-    {name:"oppo"},
-    {
-      $set:{price:9999,name:"oppo 8",brand:"redmi"}
-    }
-    )
-    console.log(data);
+  console.log(req.body);
+  res.send(result);
+});
+//get all data from database
+app.get("/list", async (req, res) => {
+  const data = await product.find();
+  res.send(data);
+});
+//delete data from database
+app.delete("/delete/:_id", async (req, res) => {
+  console.log(req.params);
+  const data = await product.deleteOne(req.params);
+  res.send(data);
+});
 
-}
-// updateInDB()
+//upadate data in database
+app.put("/update/:_id", async (req, res) => {
+  const data = await product.updateOne(req.params, { $set: req.body });
+  res.send(data);
+});
 
-//delete data in db
-const deleteInDB =async ()=>{
-  const productsModal = mongoose.model("products",productschema);
-  const data = await productsModal.deleteMany({name:"v8 engine"});
-  console.log(data);
-}
-
-// deleteInDB()
-
-//find in db (read from db)
-const findInDB =async ()=>{
-  const productsModal = mongoose.model("products",productschema);
-  const data = await productsModal.find({})
-  console.log(data);
-}
-
-findInDB();
-
-
-
+app.listen(5000, () => {
+  console.log("running on port 5000"); 
+});

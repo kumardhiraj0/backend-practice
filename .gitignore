@@ -1,1 +1,15 @@
 node_modules
+crud
+files
+public
+views
+api.js
+app.js
+data.js
+delete.js
+export.js
+insert.js
+middleware.js
+mongoconnect.js
+server.js
+update.js
