@@ -1,54 +1,60 @@
-/*//file upload using multer packeges first method
-const express = require("express");
-const multer = require("multer");
+/*//os module 
+const os = require('os');
 
-const app = express();
+console.log('Platform:', os.platform());
+ console.log('Architecture:', os.arch());
+ console.log('Hostname:', os.hostname());
+ console.log('User Info:', os.userInfo());
+ console.log('Total Memory:', os.totalmem());
+console.log('Free Memory:', (os.freemem()/(1024*1024*1024)));
+console.log('CPUs:', os.cpus());
+ console.log('Network Interfaces:', os.networkInterfaces());*/
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Set the destination folder where files will be stored
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    // Set the filename for the uploaded file
-    cb(null, file.originalname);
-  }
+
+// yaha pe count kar rahe hau jitni baar api call ho rahi hai using event
+ /*const express = require("express");
+ const EventEmitter = require("events");
+ const event = new EventEmitter();
+ let count = 0
+
+ const app = express();
+
+ event.on("countApi",()=>{
+    count++;
+    console.log("event called",count);
+ })
+
+ app.get("/",(req,res)=>{
+    res.send("api called");
+    event.emit("countApi");
+ })
+
+ app.get("/search",(req,res)=>{
+    res.send("api called");
+    event.emit("countApi");
+ })
+
+ app.get("/update",(req,res)=>{
+    res.send("api called");
+    event.emit("countApi");
+ })
+
+ app.listen(3000,()=>{
+    console.log("port listen on 3000");
+ })*/
+
+
+ //other exapmle of event emmiter
+
+ const EventEmitter = require('events');
+const myEmitter = new EventEmitter();
+
+myEmitter.on('login', (username) => {
+  console.log(`User ${username} has logged in`);
 });
 
-const upload = multer({ storage: storage });
-app.post('/upload', upload.single('file'), (req, res) => {
-  // Access the uploaded file using req.file
-  // Process the file as needed
-  res.send('File uploaded successfully!');
-});
+// Simulate a login event
+myEmitter.emit('login', 'dhiraj');
 
 
-app.listen(5000,()=>{
-  console.log("running on port 5000");
-})
-*/
 
-//file uploded using 2nd method using multer
-const express = require("express");
-const multer = require("multer");
-
-const app = express();
-
-const upload = multer({
-  storage:multer.diskStorage({
-    destination:function(req,file,cb){
-      cb(null,"uploads");
-    },
-    filename : function(req,file,cb){
-      cb(null,file.fieldname + "-" + Date.now()+".jpg");
-    }
-  })
-}).single("user_file");
-
-app.post("/upload",upload,(req,res)=>{
-  res.send("uploaded successfully");
-})
-
-app.listen(5000,()=>{
-  console.log("server up on 5000");
-});

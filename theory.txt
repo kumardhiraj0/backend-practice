@@ -173,3 +173,56 @@ Some key features of Mongoose include:
     Query building: Mongoose offers a powerful query API for constructing complex queries using a fluent syntax. You can easily perform find, update, delete, and aggregation operations on MongoDB documents.
 
 Overall, Mongoose simplifies the interaction with MongoDB by providing an intuitive and flexible interface. It is widely used in Node.js applications that leverage MongoDB as their database backend.
+
+(Q). WHAT IS EVENT AND EVENT EMMITER?
+
+In Node.js, an event is an action or occurrence that happens within an application. It could be a user interaction, a file being opened, a network request completing, or any other significant moment that you want to capture or respond to. Events are an integral part of event-driven programming, where the flow of the program is determined by events and how they are handled.
+
+EventEmitter is a class provided by the Node.js core module called 'events'. It serves as a foundation for implementing the event-driven architecture in Node.js. The EventEmitter class allows you to create and handle custom events in your applications.
+
+To use EventEmitter, you first need to create an instance of it by requiring the 'events' module and initializing it:
+
+const EventEmitter = require('events');
+const myEmitter = new EventEmitter();
+
+Once you have an instance of EventEmitter, you can use its methods to work with events. The key methods provided by EventEmitter are:
+
+    on(eventName, listener): This method is used to register a listener function that will be executed when the specified event is emitted.
+
+    emit(eventName[, ...args]): This method is used to emit or trigger an event, optionally passing any number of arguments to the event listeners.
+
+    once(eventName, listener): This method is similar to on, but the listener will be automatically removed after it is called once.
+
+    removeListener(eventName, listener): This method is used to remove a specific listener for a given event.
+
+Here's an example of how you can define and use events with EventEmitter:
+// Registering an event listener
+myEmitter.on('myEvent', (arg1, arg2) => {
+  console.log('Event emitted with arguments:', arg1, arg2);
+});
+
+// Emitting the event
+myEmitter.emit('myEvent', 'Hello', 'World');
+
+When the myEvent event is emitted, the listener function is called and the provided arguments ('Hello' and 'World') are logged to the console.
+
+The EventEmitter class provides a flexible way to implement event-driven functionality in Node.js, allowing you to create custom events, handle them, and respond accordingly in your applications.
+
+(Q). what is REPL??
+REPL stands for "Read-Eval-Print Loop." In the context of Node.js, REPL refers to a built-in interactive programming environment that allows you to enter and execute code snippets, see the results immediately, and iterate on your code in real-time.
+
+When you run the node command without any script file as an argument, Node.js starts a REPL session. You can interact with the REPL by entering JavaScript code line by line, and the REPL evaluates and executes each line immediately. It then prints the result or output of the evaluated code, if any.
+
+Here's an example of using the Node.js REPL:
+
+$ node
+Welcome to Node.js v14.17.0.
+Type ".help" for more information.
+> const message = 'Hello, World!';
+undefined
+> console.log(message);
+Hello, World!
+undefined
+> 2 + 3
+5
+
